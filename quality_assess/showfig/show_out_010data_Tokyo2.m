@@ -1,0 +1,85 @@
+close all 
+frame = 2;
+index = [240,295,50,105];%2
+% load('all_HSIt_tensor_T29RMM.mat')
+% load('AcMask1_6_mini.mat')
+Y_tensorT=my2_sentinel2Clean;
+for i=1:4
+    a=Y_tensorT(:,:,:,i);
+    Y_tensorT(:,:,:,i)=a/max(a(:));
+end
+% Re_tensor{1}=Re_tensor{1}+AcMask1_6_mini;
+%% HI
+imnameOr         =['C:\Users\pc\Desktop\tcrfctn20220219\fig\Tokyo\','Or_out_Tokyo2.eps'];
+imnameOb         =['C:\Users\pc\Desktop\tcrfctn20220219\fig\Tokyo\','Ob_out_Tokyo2.eps'];
+imnameBCSLRpGS     =['C:\Users\pc\Desktop\tcrfctn20220219\fig\Tokyo\','BCSLRpGS_out_Tokyo2.eps'];
+imnameTVRSDC        =['C:\Users\pc\Desktop\tcrfctn20220219\fig\Tokyo\','TVRSDC_out_Tokyo2.eps'];
+imnameRTCR     =['C:\Users\pc\Desktop\tcrfctn20220219\fig\Tokyo\','RTCR_out_Tokyo2.eps'];
+imnameTCRFCTN      =['C:\Users\pc\Desktop\tcrfctn20220219\fig\Tokyo\','TCRFCTN_out_Tokyo2.eps'];
+
+clean_band = Y_tensorT(:,:,[3,2,1],frame);
+clean_sort = sort(clean_band(:));
+pixel_num = length(clean_sort);
+minv = clean_sort(fix(pixel_num*0.01));
+maxv = clean_sort(fix(pixel_num*0.99));
+
+%% Or
+I = Y_tensorT(:,:,[3,2,1],frame);
+I = (I-minv)/(maxv-minv);
+I(I<0) = 0;
+I(I>1) = 1;
+% I1 = DrawRectangle(I,[index(1),index(3)], [index(2),index(4)],4);
+I1 = ShowEnlargedRectangle_wd(I,[index(1),index(3)], [index(2),index(4)],  4,  4);
+figure;imshow(I1,'border','tight','initialmagnification','fit');
+print(imnameOr,'-depsc');
+
+%% Ob
+I = Re_tensor{1}(:,:,[3,2,1],frame);
+I = (I-minv)/(maxv-minv);
+I(I<0) = 0;
+I(I>1) = 1;
+% I1 = DrawRectangle(I,[index(1),index(3)], [index(2),index(4)],4);
+I1 = ShowEnlargedRectangle_wd(I,[index(1),index(3)], [index(2),index(4)],  4,  4);
+figure;imshow(I1,'border','tight','initialmagnification','fit');
+print(imnameOb,'-depsc');
+
+%% BCSLRpGS
+I = Re_tensor{2}(:,:,[3,2,1],frame);
+I = (I-minv)/(maxv-minv);
+I(I<0) = 0;
+I(I>1) = 1;
+% I1 = DrawRectangle(I,[index(1),index(3)], [index(2),index(4)],4);
+I1 = ShowEnlargedRectangle_wd(I,[index(1),index(3)], [index(2),index(4)],  4,  4);
+figure;imshow(I1,'border','tight','initialmagnification','fit');
+print(imnameBCSLRpGS,'-depsc');
+
+%% TVRSDC
+I = Re_tensor{3}(:,:,[3,2,1],frame);
+I = (I-minv)/(maxv-minv);
+I(I<0) = 0;
+I(I>1) = 1;
+% I1 = DrawRectangle(I,[index(1),index(3)], [index(2),index(4)],4);
+I1 = ShowEnlargedRectangle_wd(I,[index(1),index(3)], [index(2),index(4)],  4,  4);
+figure;imshow(I1,'border','tight','initialmagnification','fit');
+print(imnameTVRSDC,'-depsc');
+
+%% RTCR 
+I = Re_tensor{4}(:,:,[3,2,1],frame);
+I = (I-minv)/(maxv-minv);
+I(I<0) = 0;
+I(I>1) = 1;
+% I1 = DrawRectangle(I,[index(1),index(3)], [index(2),index(4)],4);
+I1 = ShowEnlargedRectangle_wd(I,[index(1),index(3)], [index(2),index(4)],  4,  4);
+figure;imshow(I1,'border','tight','initialmagnification','fit');
+print(imnameRTCR,'-depsc');
+% 
+
+%% TCRFCTN
+I = Re_tensor{5}(:,:,[3,2,1],frame);
+I = (I-minv)/(maxv-minv);
+I(I<0) = 0;
+I(I>1) = 1;
+% I1 = DrawRectangle(I,[index(1),index(3)], [index(2),index(4)],4);
+I1 = ShowEnlargedRectangle_wd(I,[index(1),index(3)], [index(2),index(4)],  4,  4);
+figure;imshow(I1,'border','tight','initialmagnification','fit');
+print(imnameTCRFCTN,'-depsc');
